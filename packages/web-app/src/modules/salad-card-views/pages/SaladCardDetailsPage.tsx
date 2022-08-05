@@ -8,6 +8,7 @@ import { Head } from '../../../components'
 import { currencyFormatter } from '../../../formatters'
 import { SaladTheme } from '../../../SaladTheme'
 import { withLogin } from '../../auth-views'
+import { SaladCardDepositModal } from '../components/SaladCardDepositModal'
 import { SaladCardFullView } from '../components/SaladCardFullView'
 import { SaladCardProtectedView } from '../components/SaladCardProtectedView'
 
@@ -92,6 +93,8 @@ const _SaladCardDetailsPage = ({
   }, [handleLoadSaladCard, handleLoadSaladBalance, handleRouteToStore, hasSaladCard, handleLoadSaladCardEmbededUrl])
 
   const [viewFullSaladCardModal, setViewFullSaladCardModal] = useState<boolean>(false)
+  const [viewSaladBalanceDepositModal, setViewSaladBalanceDepositModal] = useState<boolean>(false)
+
   let intervalId: NodeJS.Timer
 
   const handleCloseSaladCardModalAfterFiveMinutes = () => {
@@ -125,6 +128,13 @@ const _SaladCardDetailsPage = ({
               </div>
               <div className={classes.mb12}>
                 <Text variant="headline">{currencyFormatter.format(saladCardBalance ?? 0)} </Text>
+              </div>
+              <div className={classes.mb12}>
+                <Button
+                  variant="secondary"
+                  label="Deposit Balance"
+                  onClick={() => setViewSaladBalanceDepositModal(true)}
+                />
               </div>
               <div className={classes.mb12}>
                 <Button
@@ -162,6 +172,16 @@ const _SaladCardDetailsPage = ({
             saladCardEmbededUrl={saladCardEmbededUrl}
             saladCardEmbededUrlErrorMessage={saladCardEmbededUrlErrorMessage}
           />
+        </Modal>
+      )}
+      {viewSaladBalanceDepositModal && (
+        <Modal
+          onClose={() => {
+            setViewSaladBalanceDepositModal(false)
+          }}
+          title={'SaladCard Basic Deposit Balance'}
+        >
+          <SaladCardDepositModal />
         </Modal>
       )}
     </div>
